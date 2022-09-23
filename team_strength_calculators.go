@@ -16,15 +16,12 @@ func CalculateTeamStrength1(members []int, scoreDb *PlayerScoreDb) float64 {
 		strengthValues[i] = scoreDb.GetLatestScoreForPlayer(members[i])
 	}
 	sort.Float64s(strengthValues)
+
 	strongestPlayer := strengthValues[len(strengthValues)-1]
 	secondStrongestPlayer := strengthValues[len(strengthValues)-2]
+	avgOfRest := sumFloatSlice(strengthValues, 0, len(strengthValues)-2) / float64(len(strengthValues)-2)
 
-	sum := 0.0
-	for i := 0; i < len(strengthValues)-2; i++ {
-		sum += strengthValues[i]
-	}
-	teamStrength := (sum/float64(len(strengthValues)-2))*4 + strongestPlayer + secondStrongestPlayer
-	return teamStrength
+	return strongestPlayer + secondStrongestPlayer + avgOfRest*4
 }
 
 func CalculateTeamStrength2(members []int, scoreDb *PlayerScoreDb) float64 {
